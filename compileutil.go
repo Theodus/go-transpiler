@@ -1,21 +1,23 @@
 package main
 
 import (
+	"bufio"
+	"fmt"
 	"os"
 	"os/exec"
-	"fmt"
-	"bufio"
+
 	"github.com/codegangsta/cli"
 )
 
 func main() {
+	cmd("go", "get", "-u", "-v", "github.com/tardisgo/tardisgo")
 	app := cli.NewApp()
 	app.Name = "tardisgo-compileutil"
 	app.Usage = "compile Go to Java, C++, and C# using tardisgo"
 	app.Commands = []cli.Command{
 		{
-			Name:   "java",
-			Usage:  "Compile Go source to Java target",
+			Name:  "java",
+			Usage: "Compile Go source to Java target",
 			Action: func(ctx *cli.Context) {
 				cmd("./bin/tardisgo", ctx.Args()[0])
 				cmd("haxe", "-main", "tardis.Go", "-cp", "tardis", "-dce", "full", "-java", "tardis/java")
@@ -26,8 +28,8 @@ func main() {
 				cmd("cp", "tardis/java/Go.jar", "bin/java/")
 			},
 		}, {
-			Name:   "cpp",
-			Usage:  "Compile Go source to C++ target",
+			Name:  "cpp",
+			Usage: "Compile Go source to C++ target",
 			Action: func(ctx *cli.Context) {
 				cmd("./bin/tardisgo", ctx.Args()[0])
 				cmd("haxe", "-main", "tardis.Go", "-cp", "tardis", "-dce", "full", "-cpp", "tardis/cpp")
@@ -39,8 +41,8 @@ func main() {
 				cmd("cp", "tardis/cpp/Go", "bin/cpp/")
 			},
 		}, {
-			Name:   "cs",
-			Usage:  "Compile Go source to C# target",
+			Name:  "cs",
+			Usage: "Compile Go source to C# target",
 			Action: func(ctx *cli.Context) {
 				cmd("./bin/tardisgo", ctx.Args()[0])
 				cmd("haxe", "-main", "tardis.Go", "-cp", "tardis", "-dce", "full", "-cs", "tardis/cs")
