@@ -35,12 +35,12 @@ go-transpiler js myGoPackage
 
 ## More information on TARDIS Go
 
-Check out the Github repository at https://github.com/tardisgo/tardisgo
+Check out the GitHub repository at https://github.com/tardisgo/tardisgo
 or the website at https://tardisgo.github.io
 
 ## More information on GopherJS
 
-Check out the Github repository at https://github.com/gopherjs/gopherjs
+Check out the GitHub repository at https://github.com/gopherjs/gopherjs
 
 ## License
 

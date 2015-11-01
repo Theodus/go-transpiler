@@ -14,7 +14,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "go-transpiler"
 	app.Usage = "compile Go to Java, C++, C#, or JS using tardisgo/gopherjs"
-	app.Version = "0.1.5"
+	app.Version = "0.2.0"
 	app.Commands = []cli.Command{
 		{
 			Name:  "java",
@@ -154,6 +154,7 @@ func gopherjs(pkg string) {
 	end := pkg[strings.LastIndex(pkg, "/")+1:]
 	err = cmd("mv", fmt.Sprintf("%s/bin/%s.js", os.Getenv("GOPATH"), end), fmt.Sprintf("%s/%s.js", binDir, end))
 	err = cmd("mv", fmt.Sprintf("%s/bin/%s.js.map", os.Getenv("GOPATH"), end), fmt.Sprintf("%s/%s.js.map", binDir, end))
+	fmt.Println("JS placed in", binDir)
 }
 
 func cmd(cmdName string, cmdArgs ...string) error {

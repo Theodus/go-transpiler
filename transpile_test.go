@@ -7,11 +7,11 @@ import (
 )
 
 func TestJava(t *testing.T) {
-	err := cmd("go", "install", "github.com/theodus/tardisgo-compileutil")
+	err := cmd("go", "install", "github.com/theodus/go-transpiler")
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = cmd("tardisgo-compileutil", "java", "github.com/theodus/tardisgo-compileutil/test")
+	err = cmd("go-transpiler", "java", "github.com/theodus/go-transpiler/test")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -23,11 +23,11 @@ func TestJava(t *testing.T) {
 }
 
 func TestCPP(t *testing.T) {
-	err := cmd("go", "install", "github.com/theodus/tardisgo-compileutil")
+	err := cmd("go", "install", "github.com/theodus/go-transpiler")
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = cmd("tardisgo-compileutil", "cpp", "github.com/theodus/tardisgo-compileutil/test")
+	err = cmd("go-transpiler", "cpp", "github.com/theodus/go-transpiler/test")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -39,11 +39,11 @@ func TestCPP(t *testing.T) {
 }
 
 func TestCS(t *testing.T) {
-	err := cmd("go", "install", "github.com/theodus/tardisgo-compileutil")
+	err := cmd("go", "install", "github.com/theodus/go-transpiler")
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = cmd("tardisgo-compileutil", "cs", "github.com/theodus/tardisgo-compileutil/test")
+	err = cmd("go-transpiler", "cs", "github.com/theodus/go-transpiler/test")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -55,11 +55,11 @@ func TestCS(t *testing.T) {
 }
 
 func TestJS(t *testing.T) {
-	err := cmd("go", "install", "github.com/theodus/tardisgo-compileutil")
+	err := cmd("go", "install", "github.com/theodus/go-transpiler")
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = cmd("tardisgo-compileutil", "js", "github.com/theodus/tardisgo-compileutil/test")
+	err = cmd("go-transpiler", "js", "github.com/theodus/go-transpiler/test")
 	if err != nil {
 		t.Fatal(err)
 	}
