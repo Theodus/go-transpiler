@@ -90,8 +90,14 @@ func build(lang, pkg, suf string) {
 			fmt.Println(out, err)
 			return
 		}
-	} else {
+	} else if lang == "cpp" {
 		out, err = cmd("cp", fmt.Sprintf("tardis/%s/Go", lang), binDir)
+		if err != nil {
+			fmt.Println(out, err)
+			return
+		}
+	} else {
+		out, err = cmd("cp", fmt.Sprintf("tardis/%s/Go.csproj", lang), binDir)
 		if err != nil {
 			fmt.Println(out, err)
 			return
