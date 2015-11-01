@@ -1,6 +1,7 @@
 # tardisgo-compileutil
 
-Command-Line utility for compiling Go to Java, C++, and C# using tardisgo
+Command-Line utility for compiling Go to Java, C++, or C# using tardisgo
+or to JavaScript using GopherJS
 
 ## Usage
 
@@ -27,11 +28,19 @@ Or C#:
 ```
 tardisgo-compileutil cs myGoPackage
 ```
+Or JS:
+```
+tardisgo-compileutil js myGoPackage
+```
 
 ## More information on TARDIS Go
 
-Check out the github repository at https://github.com/tardisgo/tardisgo
+Check out the Github repository at https://github.com/tardisgo/tardisgo
 or the website at https://tardisgo.github.io
+
+## More information on GopherJS
+
+Check out the Github repository at https://github.com/gopherjs/gopherjs
 
 ## License
 

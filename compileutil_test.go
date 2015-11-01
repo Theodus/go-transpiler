@@ -53,3 +53,19 @@ func TestCS(t *testing.T) {
 		t.Fatal("C# file not in ", binDir)
 	}
 }
+
+func TestJS(t *testing.T) {
+	err := cmd("go", "install", "github.com/theodus/tardisgo-compileutil")
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = cmd("tardisgo-compileutil", "js", "github.com/theodus/tardisgo-compileutil/test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	binDir := fmt.Sprintf("%s/bin/js/test.js", os.Getenv("GOPATH"))
+	_, err = os.Stat(binDir)
+	if os.IsNotExist(err) {
+		t.Fatal("JS file not in ", binDir)
+	}
+}
