@@ -1,4 +1,4 @@
-# tardisgo-compileutil
+# go-transpiler
 
 Command-Line utility for compiling Go to Java, C++, or C# using tardisgo
 or to JavaScript using GopherJS
@@ -14,23 +14,23 @@ Be sure that Haxe version 3.2.0 is installed
 
 Go get and install this package:
 ```
-go get -u github.com/theodus/tardisgo-compileutil
+go get -u github.com/theodus/go-transpiler
 ```
 Compile your code to Java:
 ```
-tardisgo-compileutil java myGoPackage
+go-transpiler java myGoPackage
 ```
 Or C++:
 ```
-tardisgo-compileutil cpp myGoPackage
+go-transpiler cpp myGoPackage
 ```
 Or C#:
 ```
-tardisgo-compileutil cs myGoPackage
+go-transpiler cs myGoPackage
 ```
 Or JS:
 ```
-tardisgo-compileutil js myGoPackage
+go-transpiler js myGoPackage
 ```
 
 ## More information on TARDIS Go
