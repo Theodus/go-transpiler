@@ -7,15 +7,15 @@ import (
 )
 
 func TestJava(t *testing.T) {
-	out, err := cmd("go", "install", "github.com/theodus/tardisgo-compileutil")
+	err := cmd("go", "install", "github.com/theodus/tardisgo-compileutil")
 	if err != nil {
-		t.Fatal(out, err)
+		t.Fatal(err)
 	}
-	out, err = cmd("tardisgo-compileutil", "java", "github.com/theodus/tardisgo-compileutil/test")
+	err = cmd("tardisgo-compileutil", "java", "github.com/theodus/tardisgo-compileutil/test")
 	if err != nil {
-		t.Fatal(out, err)
+		t.Fatal(err)
 	}
-	binDir := fmt.Sprintf("%s/bin/java/Go.jar", os.Getenv("GOPATH"))
+	binDir := fmt.Sprintf("%s/bin/java/test.jar", os.Getenv("GOPATH"))
 	_, err = os.Stat(binDir)
 	if os.IsNotExist(err) {
 		t.Fatal("jar file not in ", binDir)
@@ -23,15 +23,15 @@ func TestJava(t *testing.T) {
 }
 
 func TestCPP(t *testing.T) {
-	out, err := cmd("go", "install", "github.com/theodus/tardisgo-compileutil")
+	err := cmd("go", "install", "github.com/theodus/tardisgo-compileutil")
 	if err != nil {
-		t.Fatal(out, err)
+		t.Fatal(err)
 	}
-	out, err = cmd("tardisgo-compileutil", "cpp", "github.com/theodus/tardisgo-compileutil/test")
+	err = cmd("tardisgo-compileutil", "cpp", "github.com/theodus/tardisgo-compileutil/test")
 	if err != nil {
-		t.Fatal(out, err)
+		t.Fatal(err)
 	}
-	binDir := fmt.Sprintf("%s/bin/cpp/Go", os.Getenv("GOPATH"))
+	binDir := fmt.Sprintf("%s/bin/cpp/test", os.Getenv("GOPATH"))
 	_, err = os.Stat(binDir)
 	if os.IsNotExist(err) {
 		t.Fatal("C++ binary not in ", binDir)
@@ -39,15 +39,15 @@ func TestCPP(t *testing.T) {
 }
 
 func TestCS(t *testing.T) {
-	out, err := cmd("go", "install", "github.com/theodus/tardisgo-compileutil")
+	err := cmd("go", "install", "github.com/theodus/tardisgo-compileutil")
 	if err != nil {
-		t.Fatal(out, err)
+		t.Fatal(err)
 	}
-	out, err = cmd("tardisgo-compileutil", "cs", "github.com/theodus/tardisgo-compileutil/test")
+	err = cmd("tardisgo-compileutil", "cs", "github.com/theodus/tardisgo-compileutil/test")
 	if err != nil {
-		t.Fatal(out, err)
+		t.Fatal(err)
 	}
-	binDir := fmt.Sprintf("%s/bin/cs/Go.csproj", os.Getenv("GOPATH"))
+	binDir := fmt.Sprintf("%s/bin/cs/test.csproj", os.Getenv("GOPATH"))
 	_, err = os.Stat(binDir)
 	if os.IsNotExist(err) {
 		t.Fatal("C# file not in ", binDir)

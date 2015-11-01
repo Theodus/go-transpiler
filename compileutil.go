@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/codegangsta/cli"
 )
@@ -31,7 +32,7 @@ func main() {
 					fmt.Println("Too many arguments!")
 					return
 				}
-				build("java", ctx.Args()[0], "jar")
+				tardis("java", ctx.Args()[0], "jar")
 			},
 		}, {
 			Name:  "cpp",
@@ -45,7 +46,7 @@ func main() {
 					fmt.Println("Too many arguments!")
 					return
 				}
-				build("cpp", ctx.Args()[0], "cpp")
+				tardis("cpp", ctx.Args()[0], "cpp")
 			},
 		}, {
 			Name:  "cs",
@@ -59,14 +60,14 @@ func main() {
 					fmt.Println("Too many arguments!")
 					return
 				}
-				build("cs", ctx.Args()[0], "cs")
+				tardis("cs", ctx.Args()[0], "cs")
 			},
 		},
 	}
 	app.Run(os.Args)
 }
 
-func build(lang, pkg, suf string) {
+func tardis(lang, pkg, suf string) {
 	if err := cmd("tardisgo", pkg); err != nil {
 		fmt.Println(err)
 		return
@@ -85,20 +86,22 @@ func build(lang, pkg, suf string) {
 			return
 		}
 	}
-	if lang == "java" {
-		err = cmd("cp", fmt.Sprintf("tardis/%s/Go.jar", lang), binDir)
+	end := pkg[strings.LastIndex(pkg, "/")+1:]
+	switch lang {
+	case "java":
+		err = cmd("cp", fmt.Sprintf("tardis/%s/Go.jar", lang), fmt.Sprintf("%s/%s.jar", binDir, end))
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-	} else if lang == "cpp" {
-		err = cmd("cp", fmt.Sprintf("tardis/%s/Go", lang), binDir)
+	case "cpp":
+		err = cmd("cp", fmt.Sprintf("tardis/%s/Go", lang), fmt.Sprintf("%s/%s", binDir, end))
 		if err != nil {
 			fmt.Println(err)
 			return
 		}
-	} else {
-		err = cmd("cp", fmt.Sprintf("tardis/%s/Go.csproj", lang), binDir)
+	case "cs":
+		err = cmd("cp", fmt.Sprintf("tardis/%s/Go.csproj", lang), fmt.Sprintf("%s/%s.csproj", binDir, end))
 		if err != nil {
 			fmt.Println(err)
 			return
