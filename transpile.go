@@ -14,7 +14,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "go-transpiler"
 	app.Usage = "compile Go to Java, C++, or JS using tardisgo/gopherjs"
-	app.Version = "0.2.1"
+	app.Version = "0.2.2"
 	app.Commands = []cli.Command{
 		{
 			Name:  "java",
@@ -28,11 +28,7 @@ func main() {
 					fmt.Println("Too many arguments!")
 					return
 				}
-				if err := cmd("go", "get", "-u", "github.com/tardisgo/tardisgo"); err != nil {
-					fmt.Println(err)
-					return
-				}
-				tardis("java", ctx.Args()[0], "jar")
+				tardis("java", ctx.Args()[0])
 			},
 		}, {
 			Name:  "cpp",
@@ -46,11 +42,7 @@ func main() {
 					fmt.Println("Too many arguments!")
 					return
 				}
-				if err := cmd("go", "get", "-u", "github.com/tardisgo/tardisgo"); err != nil {
-					fmt.Println(err)
-					return
-				}
-				tardis("cpp", ctx.Args()[0], "cpp")
+				tardis("cpp", ctx.Args()[0])
 			},
 		}, {
 			Name:  "js",
@@ -64,10 +56,6 @@ func main() {
 					fmt.Println("Too many arguments!")
 					return
 				}
-				if err := cmd("go", "get", "-u", "github.com/gopherjs/gopherjs"); err != nil {
-					fmt.Println(err)
-					return
-				}
 				gopherjs(ctx.Args()[0])
 			},
 		},
@@ -75,17 +63,25 @@ func main() {
 	app.Run(os.Args)
 }
 
-func tardis(lang, pkg, suf string) {
-	if err := cmd("tardisgo", pkg); err != nil {
-		fmt.Println(err)
-		return
+func tardis(lang, pkg string) {
+	_, err := os.Stat(fmt.Sprintf("%s/bin/tardisgo", os.Getenv("GOPATH")))
+	if os.IsNotExist(err) {
+		if err := cmd("go", "get", "-u", "-v", "github.com/tardisgo/tardisgo"); err != nil {
+			fmt.Println(err)
+			return
+		}
 	}
-	err := cmd("haxe", "-main", "tardis.Go", "-cp", "tardis", "-dce", "full", fmt.Sprintf("-%s", lang), fmt.Sprintf("tardis/%s", lang))
+	err = cmd("tardisgo", pkg)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	binDir := fmt.Sprintf("%sbin/%s", os.Getenv("GOPATH"), lang)
+	err = cmd("haxe", "-main", "tardis.Go", "-cp", "tardis", "-dce", "full", fmt.Sprintf("-%s", lang), fmt.Sprintf("tardis/%s", lang))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	binDir := fmt.Sprintf("%s/bin/%s", os.Getenv("GOPATH"), lang)
 	_, err = os.Stat(binDir)
 	if os.IsNotExist(err) {
 		err = cmd("mkdir", binDir)
@@ -116,12 +112,19 @@ func tardis(lang, pkg, suf string) {
 }
 
 func gopherjs(pkg string) {
-	err := cmd("gopherjs", "install", pkg)
+	_, err := os.Stat(fmt.Sprintf("%s/bin/gopherjs", os.Getenv("GOPATH")))
+	if os.IsNotExist(err) {
+		if err := cmd("go", "get", "-u", "-v", "github.com/gopherjs/gopherjs"); err != nil {
+			fmt.Println(err)
+			return
+		}
+	}
+	err = cmd("gopherjs", "install", pkg)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	binDir := fmt.Sprintf("%sbin/js", os.Getenv("GOPATH"))
+	binDir := fmt.Sprintf("%s/bin/js", os.Getenv("GOPATH"))
 	_, err = os.Stat(binDir)
 	if os.IsNotExist(err) {
 		err = cmd("mkdir", binDir)

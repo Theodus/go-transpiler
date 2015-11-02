@@ -9,7 +9,7 @@ Be sure that your GOPATH is set and the bin directory is added to PATH:
 export GOPATH="path/to/gocode"
 export PATH=$PATH:$GOPATH/bin
 ```
-Be sure that Haxe version 3.2.0 is installed
+Be sure that Haxe version 3.2.0 is installed for tardisgo
 
 Go get and install this package:
 ```
