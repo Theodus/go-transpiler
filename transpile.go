@@ -85,7 +85,7 @@ func tardis(lang, pkg, suf string) {
 		fmt.Println(err)
 		return
 	}
-	binDir := fmt.Sprintf("%s/bin/%s", os.Getenv("GOPATH"), lang)
+	binDir := fmt.Sprintf("%sbin/%s", os.Getenv("GOPATH"), lang)
 	_, err = os.Stat(binDir)
 	if os.IsNotExist(err) {
 		err = cmd("mkdir", binDir)
@@ -118,7 +118,7 @@ func gopherjs(pkg string) {
 		fmt.Println(err)
 		return
 	}
-	binDir := fmt.Sprintf("%s/bin/js", os.Getenv("GOPATH"))
+	binDir := fmt.Sprintf("%sbin/js", os.Getenv("GOPATH"))
 	_, err = os.Stat(binDir)
 	if os.IsNotExist(err) {
 		err = cmd("mkdir", binDir)
