@@ -24,10 +24,6 @@ Or C++:
 ```
 go-transpiler cpp myGoPackage
 ```
-Or C#:
-```
-go-transpiler cs myGoPackage
-```
 Or JS:
 ```
 go-transpiler js myGoPackage
