@@ -1,7 +1,6 @@
 # go-transpiler
 
-Command-Line utility for compiling Go to Java, C++, or C# using tardisgo
-or to JavaScript using GopherJS
+Command-Line utility for compiling Go to Java or C++ using tardisgo or to JavaScript using GopherJS
 
 ## Usage
 
