@@ -94,6 +94,9 @@ func tardis(lang, pkg, suf string) {
 			return
 		}
 	}
+	if strings.LastIndex(pkg, "/") == len(pkg)-1 {
+		pkg = pkg[:len(pkg)-1]
+	}
 	end := pkg[strings.LastIndex(pkg, "/")+1:]
 	switch lang {
 	case "java":
@@ -126,6 +129,9 @@ func gopherjs(pkg string) {
 			fmt.Println(err)
 			return
 		}
+	}
+	if strings.LastIndex(pkg, "/") == len(pkg)-1 {
+		pkg = pkg[:len(pkg)-1]
 	}
 	end := pkg[strings.LastIndex(pkg, "/")+1:]
 	err = cmd("mv", fmt.Sprintf("%s/bin/%s.js", os.Getenv("GOPATH"), end), fmt.Sprintf("%s/%s.js", binDir, end))
