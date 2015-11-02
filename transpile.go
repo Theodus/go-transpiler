@@ -28,7 +28,7 @@ func main() {
 					fmt.Println("Too many arguments!")
 					return
 				}
-				if err := cmd("go", "get", "-u", "-v", "github.com/tardisgo/tardisgo"); err != nil {
+				if err := cmd("go", "get", "-u", "github.com/tardisgo/tardisgo"); err != nil {
 					fmt.Println(err)
 					return
 				}
@@ -46,7 +46,7 @@ func main() {
 					fmt.Println("Too many arguments!")
 					return
 				}
-				if err := cmd("go", "get", "-u", "-v", "github.com/tardisgo/tardisgo"); err != nil {
+				if err := cmd("go", "get", "-u", "github.com/tardisgo/tardisgo"); err != nil {
 					fmt.Println(err)
 					return
 				}
@@ -64,7 +64,7 @@ func main() {
 					fmt.Println("Too many arguments!")
 					return
 				}
-				if err := cmd("go", "get", "-u", "-v", "github.com/gopherjs/gopherjs"); err != nil {
+				if err := cmd("go", "get", "-u", "github.com/gopherjs/gopherjs"); err != nil {
 					fmt.Println(err)
 					return
 				}
