@@ -12,7 +12,7 @@ func main() {
 	app.Name = "go-transpiler"
 	app.Author = "Theodore Butler"
 	app.Usage = "compile Go to Java, C++, or JS using tardisgo/gopherjs"
-	app.Version = "0.2.4"
+	app.Version = "0.2.5"
 	app.Commands = []cli.Command{
 		{
 			Name:  "java",
