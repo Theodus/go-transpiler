@@ -4,50 +4,55 @@ import (
 	"fmt"
 	"os"
 	"testing"
-
-	"github.com/theodus/command"
 )
 
-var gopath = os.Getenv("GOPATH")
+func TestMain(m *testing.M) {
+	wd, err := os.Getwd()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	}
+	if err := os.Chdir(wd + "/test/"); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+	}
+	os.Exit(m.Run())
+}
 
 func TestJava(t *testing.T) {
-	command.Verbose("go", "install", "github.com/theodus/go-transpiler")
-	command.Verbose("go-transpiler", "java", "github.com/theodus/go-transpiler/test")
-	binDir := fmt.Sprintf("%s/bin/java/test.jar", gopath)
-	_, err := os.Stat(binDir)
+	tardis("java", "github.com/theodus/go-transpiler/test")
+	_, err := os.Stat("test.jar")
 	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Remove("test.jar"); err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestCPP(t *testing.T) {
-	command.Verbose("go", "install", "github.com/theodus/go-transpiler")
-	command.Verbose("go-transpiler", "cpp", "github.com/theodus/go-transpiler/test")
-	binDir := fmt.Sprintf("%s/bin/cpp/test", gopath)
-	_, err := os.Stat(binDir)
+	tardis("cpp", "github.com/theodus/go-transpiler/test")
+	_, err := os.Stat("test")
 	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Remove("test"); err != nil {
 		t.Fatal(err)
 	}
 }
 
 func TestJS(t *testing.T) {
-	command.Verbose("go", "install", "github.com/theodus/go-transpiler")
-	command.Verbose("go-transpiler", "js", "github.com/theodus/go-transpiler/test")
-	binDir := fmt.Sprintf("%s/bin/js/test.js", gopath)
-	_, err := os.Stat(binDir)
+	gopherjs("github.com/theodus/go-transpiler/test")
+	_, err := os.Stat("test.js")
 	if err != nil {
 		t.Fatal(err)
 	}
-}
-
-func TestCleanup(t *testing.T) {
-	if err := os.RemoveAll(gopath + "/bin/java"); err != nil {
+	if err := os.Remove("test.js"); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.RemoveAll(gopath + "/bin/cpp"); err != nil {
+	_, err = os.Stat("test.js.map")
+	if err != nil {
 		t.Fatal(err)
 	}
-	if err := os.RemoveAll(gopath + "/bin/js"); err != nil {
+	if err := os.Remove("test.js.map"); err != nil {
 		t.Fatal(err)
 	}
 }

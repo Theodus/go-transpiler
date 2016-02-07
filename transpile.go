@@ -1,81 +1,61 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"strings"
-
-	"github.com/theodus/command"
 )
 
 func tardis(lang, pkg string) {
 	_, err := os.Stat(fmt.Sprintf("%s/bin/tardisgo", os.Getenv("GOPATH")))
 	if os.IsNotExist(err) {
-		command.Verbose("go", "get", "-u", "-v", "github.com/tardisgo/tardisgo")
+		verbose("go", "get", "-u", "-v", "github.com/tardisgo/tardisgo")
 	}
-	command.Verbose("tardisgo", pkg)
-	defer func() {
-		if err := os.RemoveAll("tardis"); err != nil {
-			fmt.Println(err)
-			return
+	if pkg == "" {
+		wd, err := os.Getwd()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
 		}
-	}()
-	command.Verbose("haxe", "-main", "tardis.Go", "-cp", "tardis", "-dce", "full", fmt.Sprintf("-%s", lang), fmt.Sprintf("tardis/%s", lang))
-	binDir := fmt.Sprintf("%s/bin/%s", os.Getenv("GOPATH"), lang)
-	_, err = os.Stat(binDir)
-	if os.IsNotExist(err) {
-		if err = os.Mkdir(binDir, 0777); err != nil {
-			fmt.Println(err)
-			return
-		}
+		pref := fmt.Sprintf("%s%s", os.Getenv("GOPATH"), "/src/")
+		pkg = strings.TrimPrefix(wd, pref)
 	}
-	if strings.LastIndex(pkg, "/") == len(pkg)-1 {
-		pkg = pkg[:len(pkg)-1]
-	}
-	end := pkg[strings.LastIndex(pkg, "/")+1:]
+	verbose("tardisgo", pkg)
+	verbose("haxe", "-main", "tardis.Go", "-cp", "tardis", "-dce", "full", fmt.Sprintf("-%s", lang), fmt.Sprintf("tardis/%s", lang))
+	out := pkg[strings.LastIndex(pkg, "/")+1:]
 	switch lang {
 	case "java":
-		if err = copyFile(fmt.Sprintf("tardis/%s/Go.jar", lang), fmt.Sprintf("%s/%s.jar", binDir, end)); err != nil {
-			fmt.Println(err)
-			return
+		out += ".jar"
+		f, err := os.Create(out)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+		}
+		if err := copyFile("tardis/java/Go.jar", f.Name()); err != nil {
+			fmt.Fprintln(os.Stderr, err)
 		}
 	case "cpp":
-		if err = copyFile(fmt.Sprintf("tardis/%s/Go", lang), fmt.Sprintf("%s/%s", binDir, end)); err != nil {
-			fmt.Println(err)
-			return
+		f, err := os.Create(out)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+		}
+		if err := copyFile("tardis/java/Go", f.Name()); err != nil {
+			fmt.Fprintln(os.Stderr, err)
 		}
 	}
-	fmt.Println("binary placed in", binDir)
 }
 
 func gopherjs(pkg string) {
 	_, err := os.Stat(fmt.Sprintf("%s/bin/gopherjs", os.Getenv("GOPATH")))
 	if os.IsNotExist(err) {
-		command.Verbose("go", "get", "-u", "-v", "github.com/gopherjs/gopherjs")
+		verbose("go", "get", "-u", "-v", "github.com/gopherjs/gopherjs")
 	}
-	command.Verbose("gopherjs", "install", pkg)
-	binDir := fmt.Sprintf("%s/bin/js", os.Getenv("GOPATH"))
-	_, err = os.Stat(binDir)
-	if os.IsNotExist(err) {
-		if err = os.Mkdir(binDir, 0777); err != nil {
-			fmt.Println(err)
-			return
-		}
-	}
-	if strings.LastIndex(pkg, "/") == len(pkg)-1 {
-		pkg = pkg[:len(pkg)-1]
-	}
-	end := pkg[strings.LastIndex(pkg, "/")+1:]
-	if err = copyFile(fmt.Sprintf("%s/bin/%s.js", os.Getenv("GOPATH"), end), fmt.Sprintf("%s/%s.js", binDir, end)); err != nil {
-		fmt.Println(err)
+	if pkg == "" {
+		verbose("gopherjs", "build")
 		return
 	}
-	if err = copyFile(fmt.Sprintf("%s/bin/%s.js.map", os.Getenv("GOPATH"), end), fmt.Sprintf("%s/%s.js.map", binDir, end)); err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Println("JS placed in", binDir)
+	verbose("gopherjs", "build", pkg)
 }
 
 func copyFile(src, dst string) (err error) {
@@ -126,4 +106,43 @@ func copyFileContents(src, dst string) (err error) {
 	}
 	err = out.Sync()
 	return err
+}
+
+func verbose(cmdName string, cmdArgs ...string) {
+	cmd := exec.Command(cmdName, cmdArgs...)
+	cmdStr := cmdName
+	for _, s := range cmdArgs {
+		cmdStr += fmt.Sprintf(" %s", s)
+	}
+	fmt.Println(cmdStr)
+	outReader, err := cmd.StdoutPipe()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	outScanner := bufio.NewScanner(outReader)
+	go func() {
+		for outScanner.Scan() {
+			fmt.Println(outScanner.Text())
+		}
+	}()
+	errReader, err := cmd.StderrPipe()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	errScanner := bufio.NewScanner(errReader)
+	go func() {
+		for errScanner.Scan() {
+			fmt.Println(errScanner.Text())
+		}
+	}()
+	if err = cmd.Start(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+	if err = cmd.Wait(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 }

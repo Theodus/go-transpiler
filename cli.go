@@ -11,15 +11,15 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "go-transpiler"
 	app.Author = "Theodore Butler"
-	app.Usage = "compile Go to Java, C++, or JS using tardisgo/gopherjs"
-	app.Version = "0.2.6"
+	app.Usage = "compile Go to Java, C++, or JS using tardisgo or gopherjs"
+	app.Version = "0.3.0"
 	app.Commands = []cli.Command{
 		{
 			Name:  "java",
 			Usage: "Compile Go source to Java target",
 			Action: func(ctx *cli.Context) {
 				if len(ctx.Args()) < 1 {
-					fmt.Println("Please specify a package.")
+					tardis("java", "")
 					return
 				}
 				if len(ctx.Args()) > 1 {
@@ -33,7 +33,7 @@ func main() {
 			Usage: "Compile Go source to C++ target",
 			Action: func(ctx *cli.Context) {
 				if len(ctx.Args()) < 1 {
-					fmt.Println("Please specify a package.")
+					tardis("cpp", "")
 					return
 				}
 				if len(ctx.Args()) > 1 {
@@ -47,7 +47,7 @@ func main() {
 			Usage: "Compile Go source to JS target",
 			Action: func(ctx *cli.Context) {
 				if len(ctx.Args()) < 1 {
-					fmt.Println("Please specify a package.")
+					gopherjs("")
 					return
 				}
 				if len(ctx.Args()) > 1 {
