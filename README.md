@@ -2,6 +2,8 @@
 
 Command-Line utility for compiling Go to Java or C++ using tardisgo or to JavaScript using GopherJS
 
+![goreportcard](http://goreportcard.com/badge/theodus/go-transpiler)
+
 ## Usage
 
 Be sure that your GOPATH is set and the bin directory is added to PATH:
