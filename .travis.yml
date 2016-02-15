@@ -3,5 +3,5 @@ language: go
 go:
   - 1.5
 
-before-install:
-  - ls -la $HOME
+install:
+  - go get -t -u ./...
