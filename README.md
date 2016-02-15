@@ -2,7 +2,6 @@
 
 Command-Line utility for compiling Go to Java or C++ using tardisgo or to JavaScript using GopherJS
 
-[![Build Status](https://travis-ci.org/Theodus/go-transpiler.svg?branch=master)](https://travis-ci.org/Theodus/go-transpiler)
 ![goreportcard](http://goreportcard.com/badge/theodus/go-transpiler)
 
 ## Usage
