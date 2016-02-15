@@ -3,8 +3,11 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 	"testing"
 )
+
+var pkg string
 
 func TestMain(m *testing.M) {
 	wd, err := os.Getwd()
@@ -14,11 +17,12 @@ func TestMain(m *testing.M) {
 	if err := os.Chdir(wd + "/test/"); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	}
+	pkg = strings.TrimPrefix(wd, os.Getenv("GOPATH")+"/src/")
 	os.Exit(m.Run())
 }
 
 func TestJava(t *testing.T) {
-	tardis("java", "github.com/theodus/go-transpiler/test")
+	tardis("java", pkg)
 	_, err := os.Stat("test.jar")
 	if err != nil {
 		t.Fatal(err)
@@ -29,7 +33,7 @@ func TestJava(t *testing.T) {
 }
 
 func TestCPP(t *testing.T) {
-	tardis("cpp", "github.com/theodus/go-transpiler/test")
+	tardis("cpp", pkg)
 	_, err := os.Stat("test")
 	if err != nil {
 		t.Fatal(err)
@@ -40,7 +44,7 @@ func TestCPP(t *testing.T) {
 }
 
 func TestJS(t *testing.T) {
-	gopherjs("github.com/theodus/go-transpiler/test")
+	gopherjs(pkg)
 	_, err := os.Stat("test.js")
 	if err != nil {
 		t.Fatal(err)
