@@ -2,3 +2,9 @@ language: go
 
 go:
   - 1.5
+
+before-install:
+  - sudo apt-get update
+  - wget http://haxe.org/download/file/3.2.1/haxe-3.2.1-linux64.tar.gz
+  - tar -xvf haxe-3.2.1-linux64.tar.gz
+  - cd haxe-3.2.1
