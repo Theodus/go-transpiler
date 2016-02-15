@@ -13,3 +13,4 @@ install:
   - mkdir ~/haxelib && haxelib setup ~/haxelib
   - haxelib install hxcpp
   - haxelib install hxjava
+  - haxe --version
