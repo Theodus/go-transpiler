@@ -3,6 +3,8 @@ language: go
 go:
   - 1.5
 
+sudo: required
+
 install:
   - go get -t -u ./...
   - sudo add-apt-repository ppa:haxe/releases -y
